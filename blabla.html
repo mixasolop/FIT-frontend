@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Page with Recording & Upload</title>
+  <link rel="stylesheet" href="style.css" />
+  
+</head>
+<body>
+  <header>
+    <h1>Music to Notes</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">FAQ</a>
+      <a href="#">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="upload-section">
+      <label for="audioFile">Upload a music file:</label>
+      <input type="file" id="audioFile" accept="audio/*" />
+
+      <button onclick="convertFile()">Convert to Notes</button>
+
+      <button onclick="startRecording()">🎙️ Start Recording</button>
+      <button onclick="stopRecording()">🛑 Stop Recording</button>
+
+      <div class="instrument-buttons">
+        <button onclick="selectInstrument('Piano')">🎹 Piano</button>
+        <button onclick="selectInstrument('Guitar')">🎸 Guitar</button>
+        <button onclick="selectInstrument('Vocals')">🎤 Vocals</button>
+      </div>
+    </section>
+
+    <div class="output" id="output" style="display: none">
+      <h3>Extracted Notes:</h3>
+      <p id="notes">C4 E4 G4 C5 A4 F4 G4</p>
+    </div>
+  </main>
+
+  <script>
+    let selectedInstrument = null;
+
+    function selectInstrument(instrument) {
+      selectedInstrument = instrument;
+      alert("Instrument selected: " + instrument);
+    }
+
+    function convertFile() {
+      const fileInput = document.getElementById("audioFile");
+      if (fileInput.files.length === 0) {
+        alert("Please upload a file first.");
+        return;
+      }
+      document.getElementById("output").style.display = "block";
+      document.getElementById("notes").innerText = `C4 E4 G4 C5 A4 F4 G4 (Instrument: ${selectedInstrument || 'None'})`;
+    }
+
+    let mediaRecorder;
+    let audioChunks = [];
+
+    function startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.start();
+
+        audioChunks = [];
+        mediaRecorder.ondataavailable = (e) => {
+          audioChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+          console.log('Recording complete', audioBlob);
+          document.getElementById("output").style.display = "block";
+          document.getElementById("notes").innerText = `C4 E4 F4 A4 (Instrument: ${selectedInstrument || 'None'})`;
+        };
+
+        alert("Recording started...");
+      });
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+        alert("Recording stopped.");
+      }
+    }
+  </script>
+</body>
+</html>
