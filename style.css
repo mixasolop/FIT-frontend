@@ -48,6 +48,34 @@ body {
     padding: 0.5rem;
   }
   
+  .modal {
+    position: fixed;         /* Sticks it to the viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+    display: flex;           /* Flexbox helps center it */
+    align-items: center;     /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    backdrop-filter: blur(10px);          /* Optional: extra inner blur */
+   -webkit-backdrop-filter: blur(10px);
+    z-index: 9999;           /* SUPER on top of everything */
+  }
+  
+
+  .modal-content {
+    background: #fff;
+    padding: 25px 30px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 10000; /* Optional: extra layer */
+  }
+  
+
   .upload-section button {
     padding: 0.75rem 1.5rem;
     background-color: #4f46e5;
