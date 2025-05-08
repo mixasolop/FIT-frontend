@@ -12,7 +12,7 @@ body {
     width: 100%;
     top: 0%;
     z-index: 100%;
-    background-color: #fff;
+    background-color: #857ff9;
     padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -43,6 +43,7 @@ body {
     background: white;
     padding: 2rem;
     font-size: 2rem;
+    font-family: "Copperplate";
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     display: flex;
@@ -53,8 +54,10 @@ body {
   
   .upload-section input[type="file"] {
     padding: 0.6rem;
-    margin-left: 120px;
+    margin-left: 300px;
+    font-family: "Lucida Console";
     font-size: 1.2rem;
+    color: transparent;
   }
   
   .modal {
