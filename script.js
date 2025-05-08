@@ -1,6 +1,6 @@
 // Show the modal when the page loads
 window.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("introModal").style.display = "none";
+    document.getElementById("introModal").style.display = "flex";
   });
   
   // Close modal on button click
@@ -26,6 +26,10 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("notes").innerText = `C4 E4 G4 C5 A4 F4 G4 (Instrument: ${selectedInstrument || 'None'})`;
   }
   
+  document.getElementById('aboutBtn').addEventListener('click', () => {
+    window.location.href = 'About-Us.html';
+  });
+
   let mediaRecorder;
   let audioChunks = [];
   
@@ -74,4 +78,6 @@ window.addEventListener("DOMContentLoaded", () => {
       alert("Recording stopped.");
     }
   }
+
+  
   
