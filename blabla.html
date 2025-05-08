@@ -12,19 +12,23 @@
   <div class="modal" id="introModal">
     <div class="modal-content">
       <h2>Welcome</h2>
-      <p>ALEXCHUJ</p>
+      <h2>Instructions</h2>
+      <ol>
+        Step 1: Click the "Record" button to start recording what you want to play!<ol></ol>
+        Step 2: System will analyze the recorded sound and generate a notes sheet.<ol></ol>
+        Step 3: Read the results from the three sections below the record button.
+      </ol>
       <button class="btn" onclick="closeModal()">OK</button>
     </div>
   </div>
 
 
   <header>
-    <h1>Music to Notes</h1>
+    <h1>Music2Notes</h1>
     <nav>
       <a href="#">Home</a>
       <a href="#">FAQ</a>
       <a href="#">About</a>
-      <a href="#">Aboutt</a>
     </nav>
   </header>
 
@@ -32,12 +36,14 @@
     <section class="upload-section">
       <label for="audioFile">Upload a music file:</label>
       <input type="file" id="audioFile" accept="audio/*" />
-
-      <button onclick="convertFile()">Convert to Notes</button>
-
-      <button onclick="startRecording()">🎙️ Start Recording</button>
-      <button onclick="stopRecording()">🛑 Stop Recording</button>
-
+    
+      <!-- NEW WRAPPER for these 3 buttons -->
+      <div class="upload-buttons">
+        <button onclick="convertFile()">Convert to Notes</button>
+        <button onclick="startRecording()">🎙️ Start Recording</button>
+        <button onclick="stopRecording()">🛑 Stop Recording</button>
+      </div>
+    
       <div class="instrument-buttons">
         <button onclick="selectInstrument('Piano')">🎹 Piano</button>
         <button onclick="selectInstrument('Guitar')">🎸 Guitar</button>

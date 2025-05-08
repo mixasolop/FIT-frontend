@@ -4,11 +4,17 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
+    padding-top: 8rem;
   }
   
   header {
+    position: fixed;
+    width: 100%;
+    top: 0%;
+    left: 0%;
+    z-index: 100%;
     background-color: #fff;
-    padding: 1rem 2rem;
+    padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,12 +22,13 @@ body {
   }
   
   header h1 {
-    font-size: 1.8rem;
+    font-size: 2.6rem;
     color: #333;
   }
   
   nav a {
     margin-left: 1rem;
+    font-size: 1.3rem;
     text-decoration: none;
     color: #555;
     font-weight: bold;
@@ -29,23 +36,26 @@ body {
   
   main {
     padding: 2rem;
-    max-width: 1000px;
+    max-width: 100%;
     margin: 0 auto;
   }
   
   .upload-section {
     background: white;
     padding: 2rem;
+    font-size: 1.3rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    align-items: flex-start;
+    align-items: center;
   }
   
   .upload-section input[type="file"] {
-    padding: 0.5rem;
+    padding: 0.6rem;
+    margin-left: 100px;
+    font-size: 1rem;
   }
   
   .modal {
@@ -68,11 +78,11 @@ body {
     background: #fff;
     padding: 25px 30px;
     width: 90%;
-    max-width: 500px;
+    max-width: 650px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     text-align: center;
-    z-index: 10000; /* Optional: extra layer */
+    z-index: 9999; /* Optional: extra layer */
   }
   
 
@@ -91,12 +101,16 @@ body {
   }
   
   .instrument-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  
-  .instrument-buttons button {
+    display: flex;            
+    justify-content: center;  
+    align-items: center;
+    font: 3rem;      
+    gap: 1rem;                
+    margin-top: 3rem;         
+    align-self: center;       /* <-- centers this flex item within its parent’s column layout */
+}
+
+.instrument-buttons button {
     background-color: #e0e7ff;
     color: #1e3a8a;
     border: none;
@@ -104,10 +118,10 @@ body {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-  }
-  
-  .instrument-buttons button:hover {
-    background-color: #c7d2fe;
+ }
+
+ .instrument-buttons button:hover {
+   background-color: #c7d2fe;
   }
   
   .output {

@@ -1,6 +1,6 @@
 // Show the modal when the page loads
 window.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("introModal").style.display = "flex";
+    document.getElementById("introModal").style.display = "none";
   });
   
   // Close modal on button click
@@ -41,10 +41,28 @@ window.addEventListener("DOMContentLoaded", () => {
   
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        console.log('Recording complete', audioBlob);
-        document.getElementById("output").style.display = "block";
-        document.getElementById("notes").innerText = `C4 E4 F4 A4 (Instrument: ${selectedInstrument || 'None'})`;
+        const audioUrl = URL.createObjectURL(audioBlob);
+      
+        // Create a download link
+        const downloadLink = document.createElement("a");
+        downloadLink.href = audioUrl;
+        downloadLink.download = "recording.wav";
+        downloadLink.innerText = "⬇️ Download Your Recording";
+        downloadLink.style.display = "block";
+        downloadLink.style.marginTop = "1rem";
+        downloadLink.style.color = "#4f46e5";
+        downloadLink.style.fontWeight = "bold";
+      
+        // Show notes and link
+        const output = document.getElementById("output");
+        output.style.display = "block";
+        output.innerHTML = `
+          <h3>Extracted Notes:</h3>
+          <p id="notes">C4 E4 F4 A4 (Instrument: ${selectedInstrument || 'None'})</p>
+        `;
+        output.appendChild(downloadLink);
       };
+      
   
       alert("Recording started...");
     });
