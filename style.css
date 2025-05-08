@@ -11,7 +11,6 @@ body {
     position: fixed;
     width: 100%;
     top: 0%;
-    left: 0%;
     z-index: 100%;
     background-color: #fff;
     padding: 0.8rem 2rem;
@@ -22,28 +21,29 @@ body {
   }
   
   header h1 {
-    font-size: 2.6rem;
+    font-size: 2.7rem;
     color: #333;
   }
   
   nav a {
-    margin-left: 1rem;
     font-size: 1.3rem;
+    margin-right: 3rem;
     text-decoration: none;
     color: #555;
     font-weight: bold;
   }
   
   main {
-    padding: 2rem;
+    padding: 4rem;
     max-width: 100%;
     margin: 0 auto;
   }
   
   .upload-section {
     background: white;
+    min-height: 600px;
     padding: 2rem;
-    font-size: 1.3rem;
+    font-size: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     display: flex;
@@ -54,8 +54,8 @@ body {
   
   .upload-section input[type="file"] {
     padding: 0.6rem;
-    margin-left: 100px;
-    font-size: 1rem;
+    margin-left: 120px;
+    font-size: 1.2rem;
   }
   
   .modal {
@@ -90,8 +90,13 @@ body {
     padding: 0.75rem 1.5rem;
     background-color: #4f46e5;
     color: white;
+    margin-left: 1rem;
+    margin-top: 1rem;
     border: none;
     border-radius: 6px;
+    width: 13rem;
+    height: 5rem;
+    font-size: 1rem;
     cursor: pointer;
     font-weight: bold;
   }
@@ -103,10 +108,9 @@ body {
   .instrument-buttons {
     display: flex;            
     justify-content: center;  
-    align-items: center;
-    font: 3rem;      
+    align-items: center;      
     gap: 1rem;                
-    margin-top: 3rem;         
+    margin-top: 8rem;         
     align-self: center;       /* <-- centers this flex item within its parent’s column layout */
 }
 
@@ -114,6 +118,9 @@ body {
     background-color: #e0e7ff;
     color: #1e3a8a;
     border: none;
+    width: 8rem;
+    height: 4rem;
+    margin-left: 0.1rem;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     font-weight: bold;
