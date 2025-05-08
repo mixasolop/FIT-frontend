@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Music Page with Recording & Upload</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Music2Notes</title>
   <link rel="stylesheet" href="style.css" />
-  
-  
 </head>
 <body>
+
+  <!-- Intro modal -->
   <div class="modal" id="introModal">
     <div class="modal-content">
-      <h2>Welcome</h2>
-      <h2>Instructions</h2>
+      <h2 style="text-align: center;">Welcome</h2>
+      <h2 style="text-align: center;">Instructions</h2>
       <ol>
         Step 1: Click the "Record" button to start recording what you want to play!<ol></ol>
         Step 2: System will analyze the recorded sound and generate a notes sheet.<ol></ol>
@@ -22,44 +22,49 @@
     </div>
   </div>
 
-
+  <!-- Fixed purple header -->
   <header>
     <h1>Music2Notes</h1>
     <nav>
-      <a href="#">Home</a>
-      <a href="#">FAQ</a>
-      <a id="aboutBtn" href="#">About Us</a>
+      <a href="blabla.html">Home</a>
+      <a href="faq.html">FAQ</a>
+      <a id="aboutBtn" href="About-Us.html">About Us!</a>
     </nav>
   </header>
 
   <main>
+    <!-- two-column upload vs record -->
     <section class="upload-section">
-      <label for="audioFile"> <b> Upload a music file: </b></label>
-      <input type="file" id="audioFile" accept="audio/*" />
-    
-      <!-- NEW WRAPPER for these 3 buttons -->
-      <div class="upload-buttons">
-        <button onclick="convertFile()">Convert to Notes</button>
-        <button onclick="startRecording()">🎙️ Start Recording</button>
-        <button onclick="stopRecording()">🛑 Stop Recording</button>
+      <!-- LEFT COLUMN -->
+      <div class="left-column">
+        <label class="upload-label">Upload a music file:</label>
+        <label for="audioFile" class="upload-icon"></label>
+        <input type="file" id="audioFile" accept="audio/*" />
+        <button class="convert-btn" onclick="convertFile()">Convert to Notes</button>
       </div>
-    
-      <div class="instrument-buttons">
-        <button onclick="selectInstrument('Piano')">🎹 Piano</button>
-        <button onclick="selectInstrument('Guitar')">🎸 Guitar</button>
-        <button onclick="selectInstrument('Vocals')">🎤 Vocals</button>
+
+      <!-- RIGHT COLUMN -->
+      <div class="right-column">
+        <div class="realtime-label">Real time recording:</div>
+        <div class="realtime-buttons">
+          <button onclick="startRecording()">🎙️ Start Recording</button>
+          <button onclick="stopRecording()">🛑 Stop Recording</button>
+        </div>
+        <div class="instrument-buttons">
+          <button onclick="selectInstrument('Piano')">🎹 Piano</button>
+          <button onclick="selectInstrument('Guitar')">🎸 Guitar</button>
+          <button onclick="selectInstrument('Vocals')">🎤 Vocals</button>
+        </div>
       </div>
     </section>
 
-    <div class="output" id="output" style="display: none">
+    <!-- results panel -->
+    <div class="output" id="output" style="display:none">
       <h3>Extracted Notes:</h3>
-      <p id="notes">C4 E4 G4 C5 A4 F4 G4</p>
+      <p id="notes"></p>
     </div>
   </main>
-  <script src="script.js"></script>
 
+  <script src="script.js"></script>
 </body>
 </html>
-
-
-

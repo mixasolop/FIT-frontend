@@ -1,142 +1,230 @@
-/* Base resets */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* style.css */
+
+/* ========== GLOBAL ========== */
 body {
+  margin: 0;
+  padding-top: 4rem;               /* space for the fixed header */
+  background: #f5f5f5;
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  padding-top: 8rem; /* increased to match header height */
+  color: #333;
+  line-height: 1.5;
 }
 
-/* Header styling (changed background and layout) */
+/* ========== HEADER ========== */
 header {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
-  background-color: #857ff9; /* changed to purple */
-  padding: 1.5rem 2rem;
+  height: 7%;
+  background: #857ff9;             /* purple */
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 0.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 100;
 }
+
 header h1 {
-  font-size: 2.5rem;
-  color: #2c2c2c;
+  margin: 0;
+  font-size: 2.6rem;
 }
+
 header nav a {
-  font-size: 1rem;
-  margin-left: 2rem;
+  color: rgba(255,255,255,0.9);
+  margin-right: 1.5rem;
+  font-size: 1.5rem;
   text-decoration: none;
-  color: #4c4c4c;
   font-weight: bold;
 }
+
 header nav a:hover {
-  color: #333333;
+  color: white;
 }
 
+/* ========== MODAL ========== */
+ 
+.modal {
+  position: fixed;         /* Sticks it to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+  display: flex;           /* Flexbox helps center it */
+  align-items: center;     /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  backdrop-filter: blur(10px);          /* Optional: extra inner blur */
+ -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;           /* SUPER on top of everything */
+}
+
+
+.modal-content {
+  background: #fff;
+  padding: 25px 30px;
+  width: 90%;
+  max-width: 650px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 9999; /* Optional: extra layer */
+}
+
+/* ========== MAIN / UPLOAD SECTION ========== */
 main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100%;
+  margin: 6rem 6rem;
 }
 
-/* Upload card as two columns (changed) */
 .upload-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* left and right columns */
+  column-gap: 3rem;                /* space between columns */
   background: white;
-  padding: 3rem 2rem;
+  padding: 2rem;
+  height: 500px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  display: grid; /* changed to grid */
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
   align-items: start;
 }
-.upload-section label {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
 
-/* Left column: center icon & button */
+/* LEFT COLUMN */
 .left-column {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-}
-.left-column .icon {
-  font-size: 4rem;
-  color: #4f46e5;
-}
-.left-column button.convert {
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-.left-column button.convert:hover {
-  background-color: #3730a3;
 }
 
-/* Right column */
-.right-column label {
-  font-size: 1.5rem;
+.upload-label {
+  align-self: flex-start;
+  margin-left: 20%;
+  margin-top: 75px;
+  font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  display: block;
 }
-.right-column .record-buttons {
+
+/* hide the native file-input */
+.upload-section input[type="file"] {
+  display: none;
+}
+
+/* custom file-picker icon */
+.upload-icon {
+  width: 90px;
+  height: 90px;
+  background: #4f46e5;
+  border-radius: 8px;
+  margin-top: 1rem;
   display: flex;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 8rem;
 }
-.right-column button.record {
-  background-color: #4f46e5;
+
+.upload-icon::before {
+  content: "⬇︎";
+  font-size: 2.5rem;
+  color: white;
+  line-height: 1;
+}
+
+/* convert button */
+.convert-btn {
+  margin-top: 3rem;
+  width: 275px;
+  height: 85px;
+  background: #4f46e5;
   color: white;
   border: none;
-  padding: 1rem 2rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-right: 125px;
   cursor: pointer;
 }
-.right-column button.record:hover {
-  background-color: #3730a3;
+
+.convert-btn:hover {
+  background: #3730a3;
 }
 
-.instrument-buttons {
+/* RIGHT COLUMN */
+.right-column {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
 }
-.instrument-buttons button {
-  background-color: #e0e7ff;
-  color: #1e3a8a;
+
+/* real-time recording label */
+.realtime-label {
+  align-self: flex-start;
+  font-weight: bold;
+  margin-top: 75px;
+  font-size: 2rem;
+  margin-left: 200px;
+  margin-bottom: 0.5rem;
+}
+
+/* real-time buttons */
+.realtime-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.realtime-buttons button {
+  background: #4f46e5;
+  color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
   border-radius: 6px;
+  width: 275px;
+  height: 85px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  font-size: 1rem;
-}
-.instrument-buttons button:hover {
-  background-color: #c7d2fe;
 }
 
+.realtime-buttons button:hover {
+  background: #3730a3;
+}
+
+/* instrument buttons row */
+.instrument-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.instrument-buttons button {
+  background: #e0e7ff;
+  color: #1e3a8a;
+  border: none;
+  margin-top: 2.1rem;
+  border-radius: 6px;
+  padding: 1.5rem 2.7rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.instrument-buttons button:hover {
+  background: #c7d2fe;
+}
+
+/* ========== OUTPUT PANEL ========== */
 .output {
   margin-top: 2rem;
-  background-color: white;
-  padding: 2rem;
+  background: white;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
+
 .output h3 {
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
-}
-.output p {
-  font-size: 1rem;
+  margin-top: 0;
 }
