@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music2Notes</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+    body {
+      background-color: #0a0025;
+      
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 20px;
+    }
+    /* Dropdown menu */
+    .menu { position: absolute; top: 20px; left: 20px; cursor: pointer; width: 30px; }
+    .menu div { background: white; height: 4px; margin: 6px 0; }
+    .dropdown { display: none; position: absolute; top: 60px; left: 20px; background: white; color: black; padding: 10px; border-radius: 5px; }
+    .dropdown.active { display: block; }
+    .dropdown div { margin: 8px 0; cursor: pointer; }
+    /* Header */
+    .header { font-size: 2.5rem; font-weight: bold; text-align: center; }
+    /* Main container */
+    .container { background: #fff; border-radius: 20px; display: flex; width: 100%; max-width: 900px; overflow: hidden; color: black; }
+    .section { flex: 1; padding: 30px; }
+    .divider { width: 1px; background: #e0e0e0; }
+    .section h2 { font-size: 1.25rem; margin-bottom: 20px; }
+    /* Upload */
+    .upload-box { display: flex; flex-direction: column; align-items: center; }
+    .upload-box .icon { width: 80px; height: 80px; border: 2px dashed #ccc; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #666; cursor: pointer; margin-bottom: 15px; position: relative; }
+    .upload-box input[type="file"] { position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer; }
+    .upload-box p { margin-bottom: 20px; }
+    .upload-box progress { width: 100%; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 20px; display: none; }
+    .upload-box progress::-webkit-progress-bar { background: #eee; }
+    .upload-box progress::-webkit-progress-value { background: #2ecc71; }
+    /* Recording */
+    .record-box { display: flex; flex-direction: column; align-items: center; }
+    .record-box .controls { display: flex; gap: 10px; margin-bottom: 20px; }
+    .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+    .btn-green { background: #2ecc71; color: #fff; }
+    .btn-green:hover { background: #27ae60; }
+    .btn-grey { background: #ddd; color: #333; }
+    .waveform { width: 100%; height: 80px; background: url('waveform.png') no-repeat center center; background-size: contain; margin-bottom: 20px; }
+    .instruments { display: flex; gap: 20px; }
+    .instruments label { display: flex; align-items: center; font-size: 0.95rem; }
+    .instruments input { margin-right: 5px; }
+    /* Loading bars */
+    .loading { display: none; margin: 20px auto; width: 100px; height: 50px; justify-content: space-between; align-items: flex-end; }
+    .loading.show { display: flex; }
+    .bar { width: 10px; background: #2ecc71; animation: bounce 1s infinite ease-in-out; }
+    .bar:nth-child(2) { animation-delay: 0.1s; }
+    .bar:nth-child(3) { animation-delay: 0.2s; }
+    .bar:nth-child(4) { animation-delay: 0.3s; }
+    .bar:nth-child(5) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,100%{ height:10px;}50%{height:50px;} }
+    /* Audio and notes */
+    audio { display: none; margin: 20px auto; width: 80%; max-width: 600px; }
+    .notes-box { display: none; background: white; color: black; border-radius: 20px; margin: 20px auto; width: 80%; max-width: 800px; padding: 20px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="menu" onclick="toggleDropdown()">
+    <div></div><div></div><div></div>
+  </div>
+  <div class="dropdown" id="dropdown">
+    <div>About us</div>
+    <div>FAQ</div>
+    <div>Instructions</div>
+    <div>Home</div>
+  </div>
+  <div class="header">Music2Notes</div>
+  <div class="container">
+    <div class="section upload-box">
+      <h2>Upload a music file:</h2>
+      <div class="icon">
+        <span>&#8595;</span>
+        <input id="fileInput" type="file" accept="audio/*" />
+      </div>
+      <p>Drop or click to upload</p>
+      <progress id="uploadProgress" value="0" max="100"></progress>
+      <button class="btn btn-green" onclick="startLoading()">Convert to Notes</button>
+    </div>
+    <div class="divider"></div>
+    <div class="section record-box">
+      <h2>Real-time recording</h2>
+      <div class="controls">
+        <button class="btn btn-green" id="recordBtn">Start Recording</button>
+        <button class="btn btn-grey" id="stopBtn" disabled>Stop Recording</button>
+      </div>
+      <div class="waveform"></div>
+      <div class="instruments">
+        <label><input type="radio" name="instrument" value="piano" checked> Piano</label>
+        <label><input type="radio" name="instrument" value="guitar"> Guitar</label>
+        <label><input type="radio" name="instrument" value="vocals"> Vocals</label>
+      </div>
+    </div>
+  </div>
+  <div class="loading" id="loading">
+    <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  </div>
+  <progress id="progressBar" max="100" value="0"></progress>
+  <audio id="audioPlayback" controls></audio>
+  <div class="notes-box" id="notesBox"><h2>Your notes</h2></div>
+  <script>
+    // Dropdown toggle
+    function toggleDropdown() {
+      document.getElementById('dropdown').classList.toggle('active');
+    }
+    // File upload stub (simulate progress)
+    const fileInput = document.getElementById('fileInput');
+    const uploadProgress = document.getElementById('uploadProgress');
+    fileInput.addEventListener('change', () => {
+      uploadProgress.style.display = 'block';
+      let p = 0;
+      const iv = setInterval(() => {
+        p += 10; uploadProgress.value = p;
+        if (p >= 100) clearInterval(iv);
+      }, 100);
+    });
+    // Recording logic
+    let mediaRecorder, audioChunks = [];
+    const recordBtn = document.getElementById('recordBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const audioPlayback = document.getElementById('audioPlayback');
+    recordBtn.addEventListener('click', () => {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(audioChunks);
+            audioPlayback.src = URL.createObjectURL(blob);
+            audioPlayback.style.display = 'block';
+          };
+          mediaRecorder.start();
+          recordBtn.disabled = true; stopBtn.disabled = false;
+        });
+    });
+    stopBtn.addEventListener('click', () => {
+      mediaRecorder.stop(); recordBtn.disabled = false; stopBtn.disabled = true;
+    });
+    // Loading & conversion
+    function startLoading() {
+      const loading = document.getElementById('loading');
+      const progressBar = document.getElementById('progressBar');
+      loading.classList.add('show'); progressBar.style.display = 'block'; progressBar.value = 0;
+      let prog = 0;
+      const iv2 = setInterval(() => { prog++; progressBar.value = prog; if (prog >= 100) clearInterval(iv2); }, 100);
+      setTimeout(() => {
+        loading.classList.remove('show'); progressBar.style.display = 'none';
+        document.getElementById('notesBox').style.display = 'block';
+      }, 10000);
+    }
+  </script>
+</body>
+</html>
