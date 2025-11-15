@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music2Notes</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+    body {
+      background: url('3425171.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+    .menu { position: absolute; top: 30px; left: 30px; cursor: pointer; width: 45px; }
+    .menu div { background: white; height: 6px; margin: 9px 0; }
+    .dropdown { display: none; position: absolute; top: 90px; left: 30px; background: white; color: black; padding: 15px; border-radius: 7.5px; }
+    .dropdown.active { display: block; }
+    .dropdown div { margin: 12px 0; cursor: pointer; font-size: 1.425rem; }
+    .dropdown a {
+      display: block;
+      margin: 12px 0;
+      cursor: pointer;
+      font-size: 1.425rem;
+      color: black;
+      text-decoration: none;
+    }
+    .dropdown a:hover {
+      text-decoration: underline;
+    }
+    .header { font-size: 3.75rem; font-weight: bold; margin: 30px 0; text-align: center; }
+    .container { background: #fff; border-radius: 30px; display: flex; width: 100%; max-width: 1350px; overflow: hidden; color: black; margin-bottom: 15px; }
+    .section { flex: 1; padding: 45px; }
+    .divider { width: 1.5px; background: #e0e0e0; }
+    .section h2 { font-size: 1.875rem; margin-bottom: 30px; }
+    .upload-box { display: flex; flex-direction: column; align-items: center; }
+    .upload-box .icon { width: 120px; height: 120px; border: 3px dashed #ccc; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #666; cursor: pointer; margin-bottom: 22.5px; position: relative; }
+    .upload-box input[type="file"] { position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; }
+    .upload-box p { margin-bottom: 30px; font-size: 1.5rem; }
+    .upload-box progress, .record-box progress { width: 100%; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 30px; display: none; }
+    .upload-box progress::-webkit-progress-bar, .record-box progress::-webkit-progress-bar { background: #eee; }
+    .upload-box progress::-webkit-progress-value, .record-box progress::-webkit-progress-value { background: #2ecc71; }
+    .record-box { display: flex; flex-direction: column; align-items: center; }
+    .record-box .controls { display: flex; gap: 15px; margin-bottom: 15px; }
+    .btn { padding: 18px 36px; border: none; border-radius: 12px; font-size: 1.5rem; cursor: pointer; transition: background 0.2s; }
+    .btn-green { background: #2ecc71; color: #fff; }
+    .btn-green:hover { background: #27ae60; }
+    .btn-grey { background: #ddd; color: #333; }
+    #waveCanvas { width: 100%; height: 120px; background: #f0f0f0; border-radius: 8px; margin-bottom: 30px; }
+    .instruments { display: flex; gap: 30px; }
+    .instruments label { display: flex; align-items: center; font-size: 1.425rem; }
+    .instruments input { margin-right: 7.5px; transform: scale(1.5); accent-color: #2ecc71; }
+    .handle { width: 225px; height: 9px; background: rgba(255,255,255,0.6); border-radius: 4.5px; margin: 15px auto; }
+    .loading { display: none; margin: 30px auto; width: 150px; height: 75px; justify-content: space-between; align-items: flex-end; }
+    .loading.show { display: flex; }
+    .bar { width: 15px; background: #2ecc71; animation: bounce 1s infinite ease-in-out; }
+    .bar:nth-child(2) { animation-delay: 0.1s; }
+    .bar:nth-child(3) { animation-delay: 0.2s; }
+    .bar:nth-child(4) { animation-delay: 0.3s; }
+    .bar:nth-child(5) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,100%{ height:15px;}50%{height:75px;} }
+
+    /* Results container */
+    #resultsContainer { width: 80%; max-width: 1200px; }
+    .notes-box { background: white; color: black; border-radius: 30px; margin: 30px 0; padding: 30px; font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="menu" onclick="toggleDropdown()"><div></div><div></div><div></div></div>
+  <div class="dropdown" id="dropdown">    
+    <a href="about.html">About us</a>
+    <a href="instructions.html">Instructions</a>
+    <a href="index.html">Home</a></div>
+  <div class="header">Music2Notes</div>
+  <div class="container">
+    <div class="section upload-box">
+      <h2>Upload a music file:</h2>
+      <div class="icon"><span>&#8595;</span><input id="fileInput" type="file" accept="audio/*" /></div>
+      <p>Drop or click to upload</p>
+      <progress id="uploadProgress" max="100"></progress>
+      <button class="btn btn-green" onclick="startLoading()">Convert to Notes</button>
+    </div>
+    <div class="divider"></div>
+    <div class="section record-box">
+      <h2>Real-time recording</h2>
+      <div class="controls">
+        <button class="btn btn-green" id="recordBtn">Start Recording</button>
+        <button class="btn btn-grey" id="stopBtn" disabled>Stop Recording</button>
+      </div>
+      <canvas id="waveCanvas"></canvas>
+      <div class="instruments"><label><input type="radio" name="instrument" value="piano" checked> Piano</label><label><input type="radio" name="instrument" value="guitar"> Guitar</label><label><input type="radio" name="instrument" value="vocals"> Vocals</label></div>
+    </div>
+  </div>
+  <div class="handle"></div>
+  <div class="loading" id="loading"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+  <progress id="progressBar" max="100" value="0"></progress>
+  <audio id="audioPlayback" controls style="display:none;"></audio>
+  <div id="resultsContainer"></div>
+  <script>
+    function toggleDropdown() { document.getElementById('dropdown').classList.toggle('active'); }
+    const fileInput = document.getElementById('fileInput');
+    const uploadProgress = document.getElementById('uploadProgress');
+    fileInput.addEventListener('change', () => { uploadProgress.style.display='block'; let p=0; const iv=setInterval(()=>{ if(p<100)uploadProgress.value=++p;else clearInterval(iv);},100); });
+    const canvas=document.getElementById('waveCanvas'); const canvasCtx=canvas.getContext('2d'); canvas.width=canvas.clientWidth; canvas.height=canvas.clientHeight;
+    const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    let analyser, drawTimeout;
+    let mediaRecorder, audioChunks;
+    const recordBtn=document.getElementById('recordBtn'); const stopBtn=document.getElementById('stopBtn'); const audioPlayback=document.getElementById('audioPlayback');
+    // utility to append notes
+    function appendNotes(content){
+      const container=document.getElementById('resultsContainer');
+      const box=document.createElement('div'); box.className='notes-box'; box.innerHTML=`<h2>Your notes</h2><p>${content}</p>`;
+      container.insertBefore(box, container.firstChild);
+    }
+    recordBtn.addEventListener('click',()=>{
+      if(audioCtx.state==='suspended')audioCtx.resume();
+      navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+        analyser=audioCtx.createAnalyser(); const source=audioCtx.createMediaStreamSource(stream); source.connect(analyser); analyser.fftSize=256;
+        const dataArray=new Uint8Array(analyser.fftSize); const barCount=40; const barSpacing=canvas.width/barCount;
+        const amplitudeHistory=new Array(barCount).fill(0);
+        function draw(){ drawTimeout=setTimeout(draw,100);
+          analyser.getByteTimeDomainData(dataArray); let sum=0; dataArray.forEach(v=>sum+=Math.abs(v-128)); const amplitude=sum/dataArray.length;
+          const barHeight=Math.min(canvas.height,(amplitude/64)*canvas.height);
+          amplitudeHistory.shift(); amplitudeHistory.push(barHeight);
+          canvasCtx.fillStyle='#f0f0f0'; canvasCtx.fillRect(0,0,canvas.width,canvas.height);
+          canvasCtx.strokeStyle='#2ecc71'; canvasCtx.lineWidth=8; canvasCtx.lineCap='round';
+          amplitudeHistory.forEach((h,i)=>{ const x=i*barSpacing+barSpacing/2; canvasCtx.beginPath(); canvasCtx.moveTo(x,canvas.height); canvasCtx.lineTo(x,canvas.height-h); canvasCtx.stroke(); });
+        }
+        draw(); audioChunks=[]; mediaRecorder=new MediaRecorder(stream);
+        mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+          clearTimeout(drawTimeout);
+          // loading animation
+          const loading = document.getElementById('loading');
+          const progressBar = document.getElementById('progressBar');
+          loading.classList.add('show'); progressBar.style.display = 'block'; progressBar.value = 0;
+          let prog = 0; const iv = setInterval(() => { if (prog < 100) progressBar.value = ++prog; else clearInterval(iv); }, 50);
+          setTimeout(() => {
+            loading.classList.remove('show'); progressBar.style.display = 'none';
+            // create a new result block for this recording
+            const container = document.getElementById('resultsContainer');
+            const resultBox = document.createElement('div');
+            resultBox.className = 'notes-box';
+            // audio playback element
+            const audioElem = document.createElement('audio');
+            audioElem.controls = true;
+            const blob = new Blob(audioChunks);
+            audioElem.src = URL.createObjectURL(blob);
+            // notes label
+            const notesHeader = document.createElement('h2');
+            notesHeader.textContent = 'Your notes';
+            const notesPara = document.createElement('p');
+            notesPara.textContent = 'Transcribed notes for recording';
+            // assemble
+            resultBox.appendChild(notesHeader);
+            resultBox.appendChild(audioElem);
+            resultBox.appendChild(notesPara);
+            container.insertBefore(resultBox, container.firstChild);
+          }, 6000);
+        };
+        mediaRecorder.start(); recordBtn.disabled=true; stopBtn.disabled=false;
+      });
+    });
+    stopBtn.addEventListener('click',()=>{ mediaRecorder.stop(); recordBtn.disabled=false; stopBtn.disabled=true; });
+    function startLoading(){
+      if(!fileInput.files||fileInput.files.length===0)return;
+      const loading=document.getElementById('loading'); const progressBar=document.getElementById('progressBar');
+      loading.classList.add('show'); progressBar.style.display='block'; progressBar.value=0; let prog=0; const iv=setInterval(()=>{ if(prog<100)progressBar.value=++prog; else clearInterval(iv); },100);
+      setTimeout(()=>{
+        loading.classList.remove('show'); progressBar.style.display='none';
+        appendNotes('Transcribed notes for file: '+fileInput.files[0].name);
+      },10000);
+    }
+  </script>
+</body>
+</html>
