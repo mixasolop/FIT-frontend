@@ -1,0 +1,230 @@
+/* style.css */
+
+/* ========== GLOBAL ========== */
+body {
+  margin: 0;
+  padding-top: 4rem;               /* space for the fixed header */
+  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* ========== HEADER ========== */
+header {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 7%;
+  background: #857ff9;             /* purple */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 100;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2.6rem;
+}
+
+header nav a {
+  color: rgba(255,255,255,0.9);
+  margin-right: 1.5rem;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+header nav a:hover {
+  color: white;
+}
+
+/* ========== MODAL ========== */
+ 
+.modal {
+  position: fixed;         /* Sticks it to the viewport */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+  display: flex;           /* Flexbox helps center it */
+  align-items: center;     /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  backdrop-filter: blur(10px);          /* Optional: extra inner blur */
+ -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;           /* SUPER on top of everything */
+}
+
+
+.modal-content {
+  background: #fff;
+  padding: 25px 30px;
+  width: 90%;
+  max-width: 650px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+  z-index: 9999; /* Optional: extra layer */
+}
+
+/* ========== MAIN / UPLOAD SECTION ========== */
+main {
+  max-width: 100%;
+  margin: 6rem 6rem;
+}
+
+.upload-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* left and right columns */
+  column-gap: 3rem;                /* space between columns */
+  background: white;
+  padding: 2rem;
+  height: 500px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  align-items: start;
+}
+
+/* LEFT COLUMN */
+.left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-label {
+  align-self: flex-start;
+  margin-left: 20%;
+  margin-top: 75px;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* hide the native file-input */
+.upload-section input[type="file"] {
+  display: none;
+}
+
+/* custom file-picker icon */
+.upload-icon {
+  width: 90px;
+  height: 90px;
+  background: #4f46e5;
+  border-radius: 8px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 8rem;
+}
+
+.upload-icon::before {
+  content: "⬇︎";
+  font-size: 2.5rem;
+  color: white;
+  line-height: 1;
+}
+
+/* convert button */
+.convert-btn {
+  margin-top: 3rem;
+  width: 275px;
+  height: 85px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-right: 125px;
+  cursor: pointer;
+}
+
+.convert-btn:hover {
+  background: #3730a3;
+}
+
+/* RIGHT COLUMN */
+.right-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* real-time recording label */
+.realtime-label {
+  align-self: flex-start;
+  font-weight: bold;
+  margin-top: 75px;
+  font-size: 2rem;
+  margin-left: 200px;
+  margin-bottom: 0.5rem;
+}
+
+/* real-time buttons */
+.realtime-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.realtime-buttons button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 275px;
+  height: 85px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.realtime-buttons button:hover {
+  background: #3730a3;
+}
+
+/* instrument buttons row */
+.instrument-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.instrument-buttons button {
+  background: #e0e7ff;
+  color: #1e3a8a;
+  border: none;
+  margin-top: 2.1rem;
+  border-radius: 6px;
+  padding: 1.5rem 2.7rem;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.instrument-buttons button:hover {
+  background: #c7d2fe;
+}
+
+/* ========== OUTPUT PANEL ========== */
+.output {
+  margin-top: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.output h3 {
+  margin-top: 0;
+}
