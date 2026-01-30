@@ -1,62 +1,36 @@
-# FitProj
+# Music2Nodes
 
-A Go application built with the Fiber web framework.
+Music2Nodes is a **team project** that converts recorded instrument audio into
+musical notes to help beginners play songs without available sheet music.
 
-## Project Structure
+The application allows users to upload audio, processes it using an AI-based
+pipeline, and returns the corresponding notes for the selected instrument.
 
-```
-├── api/        # API documentation, OpenAPI specs
-├── cmd/        # Application entry points
-│   └── main.go # Main application entry point
-├── config/     # Configuration related code
-├── docs/       # Documentation
-├── internal/   # Private application code
-│   ├── handlers/   # HTTP handlers
-│   ├── middleware/ # Middleware components
-│   └── routes/     # Route definitions
-├── pkg/        # Public libraries that can be used by external applications
-```
+---
 
-## Getting Started
+## My role in the project
 
-### Prerequisites
+I was responsible for **both frontend and backend integration**:
 
-- Go 1.19 or higher
+- implemented the frontend interface
+- connected the frontend with the backend services
+- handled communication between the UI and the model responce
 
-### Installation
+---
 
-1. Clone the repository
-2. Install dependencies:
+## How it works (high level)
 
-```bash
-go mod tidy
-```
+1. User uploads audio from an instrument
+2. The AI processes the audio and removes background noise
+3. The processed signal is analyzed to extract frequencies
+4. Frequencies are mapped to musical notes
+5. The final notes are returned and displayed in the frontend
 
-### Running the Application
+---
 
-```bash
-go run cmd/main.go
-```
+## Technologies
 
-Or build and run:
-
-```bash
-go build -o fitproj cmd/main.go
-./fitproj
-```
-
-## Environment Variables
-
-Copy the `.env.example` to `.env` and adjust the values as needed:
-
-```bash
-cp .env.example .env
-```
-
-## API Documentation
-
-API endpoints and documentation can be found in the `api/` directory.
-
-## License
-
-This project is licensed under the MIT License.
+- Frontend: HTML / CSS / JavaScript
+- Backend: Go / Python
+- AI: pre-trained model for audio processing and denoising
+- Team project
